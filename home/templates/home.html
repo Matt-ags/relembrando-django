@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD com DJANGO</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-white">
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-3">CRUD simples</h1>
+        <p class="text-center mb-4">Testando crud com Django</p>
+        <hr>
+
+        <div class="mb-4">
+            <h4>Buscar usuário:</h4>
+            <form method="get" action="/home/" class="row g-3">
+                <div class="col-md-8">
+                    <input type="text" name="busca" class="form-control" placeholder="Digite o nome">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">Buscar</button>
+                </div>
+            </form>
+        </div>
+
+        <hr>
+
+        <div class="mb-4">
+            <h4>Cadastrar novo usuário:</h4>
+            <form action="/home/" method="POST" class="row g-3">
+                {% csrf_token %}
+                <div class="col-md-8">
+                    <input type="text" name="nome" class="form-control" placeholder="Nome do usuário" required>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-success w-100">Salvar</button>
+                </div>
+            </form>
+        </div>
+
+        <hr>
+
+        <div>
+            <h4>Usuários cadastrados:</h4>
+            {% if usuarios %}
+                <ul class="list-group">
+                    {% for usuario in usuarios %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ usuario.nome }}
+                            <form action="{% url 'deletar_usuario' usuario.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Remover</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="alert alert-info mt-3">Nenhum usuário ainda.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
